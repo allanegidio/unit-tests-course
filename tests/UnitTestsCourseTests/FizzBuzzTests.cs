@@ -6,14 +6,20 @@ namespace UnitTestsCourseTests
 {
     public class FizzBuzzTests
     {
-        [Fact]
-        public void GetOutput_WhenCalled_ReturnFizzBuzz()
+        [Theory]
+        [InlineData(465, "FizzBuzz")]
+        [InlineData(15, "FizzBuzz")]
+        [InlineData(9, "Fizz")]
+        [InlineData(5, "Buzz")]
+        [InlineData(1, "1")]
+
+        public void GetOutput_WhenCalled_ReturnFizzBuzz(int number, string expected)
         {
             //Act
-            var result = FizzBuzz.GetOutput(15);
+            var result = FizzBuzz.GetOutput(number);
 
             //Asserts
-            result.Should().Be("FizzBuzz");
+            result.Should().Be(expected);
         }
     }
 }
