@@ -29,6 +29,16 @@ namespace UnitTestsCourseTests
         }
 
         [Fact]
+        public void CalculateDemeritPoints_SpeedLessThanSpeedLimit_ReturnZero()
+        {
+            var calculator = new DemeritPointsCalculator();
+
+            var act = calculator.CalculateDemeritPoints(45);
+
+            act.Should().Be(0);
+        }
+
+        [Fact]
         public void CalculateDemeritPoints_SpeedGrater15KmThanSpeedLimit_Return3DemeritPoints()
         {
             var calculator = new DemeritPointsCalculator();
