@@ -12,10 +12,10 @@ namespace UnitTestsCourseTests.Mocking
         {
             var list = new List<Video>();
 
-            list.Add(new Video() { Id = 1, IsProcessed = true, Title = "Video Processado" });
+            list.Add(new Video() { Id = 1, IsProcessed = false, Title = "Video Processado" });
             list.Add(new Video() { Id = 2, IsProcessed = false, Title = "Video Cagado" });
             list.Add(new Video() { Id = 3, IsProcessed = false, Title = "Video Fudido" });
-            list.Add(new Video() { Id = 4, IsProcessed = true, Title = "Video Processado de Boa" });
+            list.Add(new Video() { Id = 4, IsProcessed = false, Title = "Video Processado de Boa" });
 
             return list;
         }
@@ -25,7 +25,7 @@ namespace UnitTestsCourseTests.Mocking
     public class VideoServiceTests
     {
         [Fact]
-        public void GetUnprocessedVideosAsCsv_WhenUnprocessedVideosIsEmpty_ReturnEmptyString()
+        public void GetUnprocessedVideosAsCsv_AllVideosAreProcessed_ReturnEmptyString()
         {
             var videoRepositoryMock = new Mock<IVideoRepository>();
             var fileReaderMock = new Mock<IFileReader>();
@@ -49,7 +49,7 @@ namespace UnitTestsCourseTests.Mocking
             var service = new VideoService(fileReaderMock.Object, videoRepositoryMock.Object);
             var result = service.GetUnprocessedVideosAsCsv();
 
-            result.Should().BeSameAs("2,3");
+            result.Should().Be("1,2,3,4");
         }
     }
 }
