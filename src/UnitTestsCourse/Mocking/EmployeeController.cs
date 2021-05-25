@@ -6,9 +6,9 @@ namespace UnitTestsCourse.Mocking
     {
         private IEmployeeStorage _db;
 
-        public EmployeeController()
+        public EmployeeController(IEmployeeStorage db = null)
         {
-            _db = new EmployeeStorage();
+            _db = db ?? new EmployeeStorage();
         }
 
         public ActionResult DeleteEmployee(int id)
