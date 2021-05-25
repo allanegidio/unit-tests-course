@@ -20,7 +20,7 @@ namespace UnitTestsCourse.Mocking
 
                 return true;
             }
-            catch (WebException ex)
+            catch (WebException)
             {
                 return false;
             }
