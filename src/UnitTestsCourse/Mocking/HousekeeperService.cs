@@ -1,16 +1,17 @@
 using System;
+using System.Linq;
 using UnitTestsCourse.Mocking;
 
 namespace TestNinja.Mocking
 {
-    public class HousekeeperHelper
+    public class HousekeeperService
     {
         private readonly IHousekeeperRepository _housekeeperRepository;
         private readonly IStatementService _statementService;
         private readonly IEmailService _emailService;
         private readonly IXtraMessageBox _xtraMessageBox;
 
-        public HousekeeperHelper(
+        public HousekeeperService(
             IHousekeeperRepository housekeeperRepository,
             IStatementService statementService,
             IEmailService emailService,
@@ -22,16 +23,16 @@ namespace TestNinja.Mocking
             _housekeeperRepository = housekeeperRepository;
         }
 
-        public bool SendStatementEmails(DateTime statementDate)
+        public void SendStatementEmails(DateTime statementDate)
         {
             var housekeepers = _housekeeperRepository.GetHousekeepers();
 
             foreach (var housekeeper in housekeepers)
             {
-                if (housekeeper.Email == null)
+                if (string.IsNullOrWhiteSpace(housekeeper.Email))
                     continue;
 
-                var statementFilename = _statementService.SaveStatement(housekeeper.Oid, housekeeper.FullName, statementDate);
+                var statementFilename = _statementService.SaveStatement(housekeeper.Id, housekeeper.FullName, statementDate);
 
                 if (string.IsNullOrWhiteSpace(statementFilename))
                     continue;
@@ -46,12 +47,10 @@ namespace TestNinja.Mocking
                 }
                 catch (Exception e)
                 {
-                    _xtraMessageBox.Show(e.Message, string.Format("Email failure: {0}", emailAddress),
+                    _xtraMessageBox.Show(e.Message, string.Format("Email failure: st{0}", emailAddress),
                         MessageBoxButtons.OK);
                 }
             }
-
-            return true;
         }
     }
 
@@ -110,7 +109,7 @@ namespace TestNinja.Mocking
     public class Housekeeper
     {
         public string Email { get; set; }
-        public int Oid { get; set; }
+        public int Id { get; set; }
         public string FullName { get; set; }
         public string StatementEmailBody { get; set; }
     }
